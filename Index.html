@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ayat Alkitab Paskah</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .verse {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .reference {
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: #2575fc;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #e0e0e0;
+    }
+    footer {
+      font-size: 0.9rem;
+      color: #e0e0e0;
+      text-align: center;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="verse" id="verse">Klik tombol di bawah untuk mendapatkan ayat.</div>
+    <div class="reference" id="reference"></div>
+    <br>
+    <button onclick="generateVerse()">Ayat Kamu</button>
+  </div>
+
+  <script>
+    const verses = [
+      {
+        text: "Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.",
+        reference: "Filipi 4:13"
+      },
+      {
+        text: "Tuhan adalah gembalaku, takkan kekurangan aku.",
+        reference: "Mazmur 23:1"
+      },
+      {
+        text: "Karena Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, demikianlah firman TUHAN.",
+        reference: "Yeremia 29:11"
+      },
+      {
+        text: "Janganlah kamu khawatir tentang apapun juga.",
+        reference: "Filipi 4:6"
+      },
+      {
+        text: "Kasih itu sabar; kasih itu murah hati; ia tidak cemburu.",
+        reference: "1 Korintus 13:4"
+      },
+      {
+        text: "Sebab Allah tidak memberikan kepada kita roh ketakutan, melainkan roh yang membangkitkan kuasa, kasih dan ketertiban.",
+        reference: "2 Timotius 1:7"
+      },
+      {
+    text: "Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.",
+    reference: "Filipi 4:13"
+  },
+  {
+    text: "Tuhan adalah gembalaku, takkan kekurangan aku.",
+    reference: "Mazmur 23:1"
+  },
+  {
+    text: "Karena Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, demikianlah firman TUHAN.",
+    reference: "Yeremia 29:11"
+  },
+  {
+    text: "Janganlah kamu khawatir tentang apapun juga.",
+    reference: "Filipi 4:6"
+  },
+  {
+    text: "Kasih itu sabar; kasih itu murah hati; ia tidak cemburu.",
+    reference: "1 Korintus 13:4"
+  },
+  {
+    text: "Sebab Allah tidak memberikan kepada kita roh ketakutan, melainkan roh yang membangkitkan kuasa, kasih dan ketertiban.",
+    reference: "2 Timotius 1:7"
+  },
+  {
+    text: "Berbahagialah orang yang membawa damai, karena mereka akan disebut anak-anak Allah.",
+    reference: "Matius 5:9"
+  },
+  {
+    text: "Serahkanlah kuatirmu kepada TUHAN, maka Ia akan memelihara engkau.",
+    reference: "Mazmur 55:23"
+  },
+  {
+    text: "Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah mengaruniakan Anak-Nya yang tunggal.",
+    reference: "Yohanes 3:16"
+  },
+  {
+    text: "Percayalah kepada TUHAN dengan segenap hatimu, dan janganlah bersandar kepada pengertianmu sendiri.",
+    reference: "Amsal 3:5"
+  },
+  {
+    text: "Tuhan itu baik, tempat perlindungan pada waktu kesusahan.",
+    reference: "Nahum 1:7"
+  },
+  {
+    text: "Ia menyembuhkan orang-orang yang patah hati dan membalut luka-luka mereka.",
+    reference: "Mazmur 147:3"
+  },
+  {
+    text: "Mintalah, maka akan diberikan kepadamu; carilah, maka kamu akan mendapat; ketoklah, maka pintu akan dibukakan bagimu.",
+    reference: "Matius 7:7"
+  },
+  {
+    text: "Segala sesuatu yang kamu kehendaki supaya orang perbuat kepadamu, perbuatlah demikian juga kepada mereka.",
+    reference: "Matius 7:12"
+  },
+  {
+    text: "Janganlah kamu menjadi serupa dengan dunia ini, tetapi berubahlah oleh pembaharuan budimu.",
+    reference: "Roma 12:2"
+  },
+  {
+    text: "Aku telah melihat kesusahan umat-Ku dan Aku datang untuk membebaskan mereka.",
+    reference: "Keluaran 3:7-8"
+  },
+  {
+    text: "TUHAN adalah terangku dan keselamatanku, kepada siapakah aku harus takut?",
+    reference: "Mazmur 27:1"
+  },
+  {
+    text: "Segala sesuatu ada waktunya.",
+    reference: "Pengkhotbah 3:1"
+  },
+  {
+    text: "Bersukacitalah senantiasa. Tetaplah berdoa.",
+    reference: "1 Tesalonika 5:16-17"
+  },
+  {
+    text: "Damai sejahtera Kutinggalkan bagimu. Damai sejahtera-Ku Kuberikan kepadamu.",
+    reference: "Yohanes 14:27"
+  },
+  {
+  text: "Tetapi carilah dahulu Kerajaan Allah dan kebenarannya, maka semuanya itu akan ditambahkan kepadamu.",
+  reference: "Matius 6:33"
+},
+{
+  text: "Aku sekali-kali tidak akan membiarkan engkau dan Aku sekali-kali tidak akan meninggalkan engkau.",
+  reference: "Ibrani 13:5"
+},
+{
+  text: "Jangan takut, sebab Aku menyertai engkau, jangan bimbang, sebab Aku ini Allahmu.",
+  reference: "Yesaya 41:10"
+},
+{
+  text: "Sebab upah dosa ialah maut; tetapi karunia Allah ialah hidup yang kekal dalam Kristus Yesus, Tuhan kita.",
+  reference: "Roma 6:23"
+},
+{
+  text: "Segala sesuatu yang dijadikan oleh Allah itu baik adanya dan tidak ada yang haram.",
+  reference: "1 Timotius 4:4"
+},
+{
+  text: "Barangsiapa tinggal di dalam Aku dan Aku di dalam dia, ia berbuah banyak.",
+  reference: "Yohanes 15:5"
+},
+{
+  text: "Tuhan dekat kepada orang-orang yang patah hati, dan Ia menyelamatkan orang-orang yang remuk jiwanya.",
+  reference: "Mazmur 34:19"
+},
+{
+  text: "Aku tahu: Engkau sanggup melakukan segala sesuatu, dan tidak ada rencana-Mu yang gagal.",
+  reference: "Ayub 42:2"
+},
+{
+  text: "Karena hidup adalah Kristus dan mati adalah keuntungan.",
+  reference: "Filipi 1:21"
+},
+{
+  text: "Hendaklah kamu murah hati, sama seperti Bapamu adalah murah hati.",
+  reference: "Lukas 6:36"
+},
+{
+  text: "TUHAN adalah kekuatanku dan perisaiku; kepada-Nya hatiku percaya.",
+  reference: "Mazmur 28:7"
+},
+{
+  text: "Berjaga-jagalah dan berdoalah, supaya kamu jangan jatuh ke dalam pencobaan.",
+  reference: "Markus 14:38"
+},
+{
+  text: "Setiap orang hendaknya cepat untuk mendengar, tetapi lambat untuk berkata-kata dan juga lambat untuk marah.",
+  reference: "Yakobus 1:19"
+},
+{
+  text: "Sebab kasih Kristus yang menguasai kami, karena kami telah mengerti.",
+  reference: "2 Korintus 5:14"
+},
+{
+  text: "Ia memberi kekuatan kepada yang lelah dan menambah semangat kepada yang tiada berdaya.",
+  reference: "Yesaya 40:29"
+},
+{
+  text: "Sebab Tuhanlah yang memberikan hikmat, dari mulut-Nya datang pengetahuan dan kepandaian.",
+  reference: "Amsal 2:6"
+},
+{
+  text: "Tuhan menetapkan langkah-langkah orang yang hidupnya berkenan kepada-Nya.",
+  reference: "Mazmur 37:23"
+},
+{
+  text: "Tuhan itu pengasih dan penyayang, panjang sabar dan berlimpah kasih setia.",
+  reference: "Mazmur 103:8"
+},
+{
+  text: "Orang yang sabar besar pengertiannya, tetapi siapa yang cepat marah membesarkan kebodohan.",
+  reference: "Amsal 14:29"
+},
+{
+  text: "Dalam kesesakan aku berseru kepada TUHAN. TUHAN menjawab aku dengan memberikan kelegaan.",
+  reference: "Mazmur 118:5"
+}
+
+
+      
+      
+    ];
+
+    function generateVerse() {
+      const randomIndex = Math.floor(Math.random() * verses.length);
+      document.getElementById("verse").textContent = `"${verses[randomIndex].text}"`;
+      document.getElementById("reference").textContent = `— ${verses[randomIndex].reference}`;
+    }
+  </script>
+  <footer>
+    &copy; 2025 Prayoga Ade Pangestu
+  </footer>
+</body>
+</html>
