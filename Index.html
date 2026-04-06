@@ -1,156 +1,660 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ayat Paskah</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayat Paskah</title>
+  <style>
+    :root{
+      --bg-1:#07111f;
+      --bg-2:#10233f;
+      --bg-3:#1c355d;
+      --gold:#f7c65f;
+      --gold-2:#ffde8b;
+      --white:#ffffff;
+      --card:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.14);
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --radius:28px;
+    }
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0b1b2b;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
 
-.card{
-  background:rgba(255,255,255,0.08);
-  padding:20px;
-  border-radius:20px;
-  width:320px;
-  text-align:center;
-}
+    body{
+      min-height:100vh;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      color:var(--white);
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,214,102,.14), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.08), transparent 22%),
+        radial-gradient(circle at 50% 80%, rgba(255,214,102,.08), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
 
-input{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  margin-top:10px;
-}
+    .bg-orb{
+      position:fixed;
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      filter:blur(40px);
+      pointer-events:none;
+      z-index:0;
+      opacity:.55;
+      transition:transform .12s linear, opacity .12s linear;
+      background:radial-gradient(circle, rgba(255,215,128,.35), rgba(255,215,128,0));
+      animation:floatOrb 7s ease-in-out infinite;
+    }
 
-button{
-  margin-top:10px;
-  padding:10px;
-  width:100%;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
+    .orb-1{top:5%; left:8%;}
+    .orb-2{right:6%; bottom:8%; animation-delay:-3s;}
 
-.visual{
-  display:flex;
-  gap:4px;
-  justify-content:center;
-  margin:15px 0;
-}
+    @keyframes floatOrb{
+      0%,100%{transform:translateY(0) translateX(0) scale(1)}
+      50%{transform:translateY(-18px) translateX(10px) scale(1.08)}
+    }
 
-.bar{
-  width:5px;
-  height:15px;
-  background:gold;
-}
-</style>
+    .wrap{
+      width:100%;
+      max-width:460px;
+      position:relative;
+      z-index:2;
+    }
+
+    .card{
+      position:relative;
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border:1px solid var(--border);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
+      padding:24px 20px 20px;
+      overflow:hidden;
+      transform:translateY(0);
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:inherit;
+      padding:1px;
+      background:linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,214,102,.08), rgba(255,255,255,.12));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+      opacity:.9;
+    }
+
+    .top{
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .cross{
+      font-size:38px;
+      margin-bottom:8px;
+      display:inline-block;
+      filter:drop-shadow(0 0 16px rgba(255,214,102,.35));
+      animation:softPulse 2.4s infinite ease-in-out;
+      transform-origin:center;
+    }
+
+    @keyframes softPulse{
+      0%,100%{transform:scale(1); opacity:.95}
+      50%{transform:scale(1.07); opacity:1}
+    }
+
+    h1{
+      margin:0;
+      font-size:1.55rem;
+      letter-spacing:.2px;
+    }
+
+    .sub{
+      margin:8px 0 0;
+      color:rgba(255,255,255,.72);
+      font-size:.95rem;
+      line-height:1.5;
+    }
+
+    .visual{
+      position:relative;
+      height:90px;
+      display:flex;
+      align-items:end;
+      justify-content:center;
+      gap:6px;
+      margin:18px 0 10px;
+    }
+
+    .bar{
+      width:8px;
+      min-height:10px;
+      height:18px;
+      border-radius:999px;
+      background:linear-gradient(180deg, var(--gold-2), var(--gold));
+      box-shadow:0 0 16px rgba(247,198,95,.18);
+      transform-origin:bottom center;
+      transition:height .1s linear, opacity .1s linear, transform .1s linear;
+      opacity:.8;
+    }
+
+    .ring{
+      position:absolute;
+      inset:auto;
+      width:86px;
+      height:86px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:
+        inset 0 0 30px rgba(255,255,255,.04),
+        0 0 25px rgba(255,214,102,.08);
+      pointer-events:none;
+      transform:scale(1);
+      transition:transform .08s linear, box-shadow .08s linear;
+    }
+
+    .field{
+      margin-top:14px;
+    }
+
+    .input{
+      width:100%;
+      border:none;
+      outline:none;
+      border-radius:18px;
+      padding:15px 16px;
+      background:rgba(255,255,255,.09);
+      color:var(--white);
+      font-size:1rem;
+      border:1px solid rgba(255,255,255,.08);
+      transition:.2s ease;
+    }
+
+    .input::placeholder{color:rgba(255,255,255,.45)}
+    .input:focus{
+      border-color:rgba(255,214,102,.35);
+      box-shadow:0 0 0 4px rgba(255,214,102,.10);
+      background:rgba(255,255,255,.11);
+    }
+
+    .btn{
+      width:100%;
+      border:none;
+      outline:none;
+      padding:14px 16px;
+      border-radius:18px;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+
+    .btn:active{transform:scale(.98)}
+
+    .btn-main{
+      margin-top:12px;
+      color:#1c1c1c;
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow:0 16px 34px rgba(247,198,95,.28);
+    }
+
+    .btn-main:hover{transform:translateY(-1px)}
+
+    .verse-box{
+      margin-top:18px;
+      border-radius:22px;
+      padding:18px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+      display:none;
+      animation:showUp .5s ease;
+    }
+
+    @keyframes showUp{
+      from{opacity:0; transform:translateY(12px) scale(.98)}
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    .name-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:.82rem;
+      color:rgba(255,255,255,.78);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      padding:8px 12px;
+      margin-bottom:14px;
+    }
+
+    .verse-text{
+      font-size:1.14rem;
+      line-height:1.85;
+      color:#fffdf8;
+      margin:0 0 12px;
+      text-align:left;
+    }
+
+    .verse-ref{
+      color:rgba(255,255,255,.72);
+      font-size:.95rem;
+      margin:0;
+    }
+
+    .actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,.09);
+      color:var(--white);
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .music-floating{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:5;
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      border:none;
+      cursor:pointer;
+      font-size:22px;
+      color:#181818;
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow:0 14px 30px rgba(0,0,0,.28);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+
+    .music-floating:hover{
+      transform:translateY(-2px) scale(1.02);
+    }
+
+    .hint{
+      margin-top:12px;
+      text-align:center;
+      font-size:.84rem;
+      color:rgba(255,255,255,.58);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:90px;
+      transform:translateX(-50%) translateY(20px);
+      background:rgba(15,23,42,.92);
+      color:#fff;
+      padding:12px 16px;
+      border-radius:999px;
+      font-size:.9rem;
+      border:1px solid rgba(255,255,255,.08);
+      opacity:0;
+      pointer-events:none;
+      transition:.28s ease;
+      z-index:20;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:480px){
+      .card{padding:22px 16px 16px}
+      h1{font-size:1.35rem}
+      .verse-text{font-size:1.04rem}
+      .actions{grid-template-columns:1fr}
+      .music-floating{width:54px;height:54px;font-size:20px}
+      .visual{height:78px}
+      .bar{width:7px}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="bg-orb orb-1" id="orb1"></div>
+  <div class="bg-orb orb-2" id="orb2"></div>
 
-<div class="card">
-  <h2>Ayat Paskah</h2>
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="top">
+        <div class="cross" id="cross">✝️</div>
+        <h1>Ayat Paskah</h1>
+        <p class="sub">Masukkan nama terlebih dahulu, lalu ayatmu akan muncul sesuai nama yang dimasukkan.</p>
+      </div>
 
-  <input type="text" id="nama" placeholder="Masukkan nama">
-  <button onclick="ambilAyat()">Lihat Ayat</button>
+      <div class="visual" aria-hidden="true">
+        <div class="ring" id="ring"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
 
-  <div class="visual">
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div>
+      <div class="field">
+        <input type="text" id="nama" class="input" placeholder="Masukkan nama" />
+        <button class="btn btn-main" onclick="ambilAyat()">Lihat Ayat</button>
+      </div>
+
+      <div class="verse-box" id="ayatBox">
+        <div class="name-badge">✨ <span id="namaTampil">Untukmu</span></div>
+        <p class="verse-text" id="text"></p>
+        <p class="verse-ref" id="ref"></p>
+
+        <div class="actions">
+          <button class="btn btn-secondary" onclick="copyAyat()">Salin Ayat</button>
+          <button class="btn btn-secondary" onclick="shareAyat()">Bagikan Ayat</button>
+        </div>
+      </div>
+
+      <div class="hint">Tekan tombol musik di kanan bawah untuk menyalakan lagu.</div>
+    </div>
   </div>
 
-  <p id="text"></p>
-  <p id="ref"></p>
-</div>
+  <button id="musicBtn" class="music-floating" aria-label="Putar musik">🔊</button>
+  <div class="toast" id="toast"></div>
 
-<button id="musicBtn" style="position:fixed;bottom:20px;right:20px;">🔊</button>
+  <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
+    <source src="https://riimusic.my.id/search?q=SUPERNATURAL%20LOVE?filename=heavenly-ambient-110624.mp3" type="audio/mpeg">
+  </audio>
 
-<audio id="bgMusic" loop preload="auto" muted>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5e7c4d8f3c.mp3?filename=heavenly-ambient-110624.mp3" type="audio/mpeg">
-</audio>
+  <script>
+    const baseAyat = [
+      { text: "Karena begitu besar kasih Allah akan dunia ini, sehingga Ia telah mengaruniakan Anak-Nya yang tunggal, supaya setiap orang yang percaya kepada-Nya tidak binasa, melainkan beroleh hidup yang kekal.", ref: "Yohanes 3:16" },
+      { text: "Akulah kebangkitan dan hidup; barangsiapa percaya kepada-Ku, ia akan hidup walaupun ia sudah mati.", ref: "Yohanes 11:25" },
+      { text: "Ia tidak ada di sini, sebab Ia telah bangkit, sama seperti yang telah dikatakan-Nya.", ref: "Matius 28:6" },
+      { text: "Tetapi Allah menunjukkan kasih-Nya kepada kita, oleh karena Kristus telah mati untuk kita, ketika kita masih berdosa.", ref: "Roma 5:8" },
+      { text: "Tuhan adalah gembalaku, takkan kekurangan aku.", ref: "Mazmur 23:1" },
+      { text: "Dan ketahuilah, Aku menyertai kamu senantiasa sampai kepada akhir zaman.", ref: "Matius 28:20" },
+      { text: "Kuatkan dan teguhkanlah hatimu, janganlah takut dan jangan gemetar karena mereka, sebab TUHAN, Allahmu, Dialah yang berjalan menyertai engkau.", ref: "Ulangan 31:6" },
+      { text: "Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.", ref: "Filipi 4:13" },
+      { text: "Jangan takut, sebab Aku menyertai engkau, jangan bimbang, sebab Aku ini Allahmu.", ref: "Yesaya 41:10" },
+      { text: "Bersukacitalah senantiasa dalam Tuhan! Sekali lagi kukatakan: Bersukacitalah!", ref: "Filipi 4:4" },
+      { text: "Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, demikianlah firman TUHAN.", ref: "Yeremia 29:11" },
+      { text: "Serahkanlah hidupmu kepada TUHAN dan percayalah kepada-Nya, dan Ia akan bertindak.", ref: "Mazmur 37:5" },
+      { text: "Kasih setia TUHAN tak berkesudahan, rahmat-Nya tidak habis-habisnya.", ref: "Ratapan 3:22" },
+      { text: "Berbahagialah orang yang tidak melihat, namun percaya.", ref: "Yohanes 20:29" },
+      { text: "Damai sejahtera Kutinggalkan bagimu. Damai sejahtera-Ku Kuberikan kepadamu.", ref: "Yohanes 14:27" },
+      { text: "Tetapi orang-orang yang menanti-nantikan TUHAN mendapat kekuatan baru.", ref: "Yesaya 40:31" },
+      { text: "Berserulah kepada-Ku, maka Aku akan menjawab engkau.", ref: "Yeremia 33:3" },
+      { text: "TUHAN dekat pada setiap orang yang berseru kepada-Nya.", ref: "Mazmur 145:18" },
+      { text: "Sebab bagi Allah tidak ada yang mustahil.", ref: "Lukas 1:37" },
+      { text: "Hendaklah kamu kuat di dalam Tuhan, di dalam kekuatan kuasa-Nya.", ref: "Efesus 6:10" },
+      { text: "Aku sekali-kali tidak akan membiarkan engkau dan Aku sekali-kali tidak akan meninggalkan engkau.", ref: "Ibrani 13:5" },
+      { text: "TUHAN itu baik; Ia adalah tempat pengungsian pada waktu kesusahan.", ref: "Nahum 1:7" },
+      { text: "Sebab oleh kasih karunia kamu diselamatkan oleh iman.", ref: "Efesus 2:8" },
+      { text: "Dalam dunia kamu menderita penganiayaan, tetapi kuatkanlah hatimu, Aku telah mengalahkan dunia.", ref: "Yohanes 16:33" },
+      { text: "Kristus telah mati karena dosa-dosa kita dan telah dibangkitkan pada hari yang ketiga.", ref: "1 Korintus 15:3-4" }
+    ];
 
-<script>
-const ayatList = [
-{ text:"Karena begitu besar kasih Allah akan dunia ini...", ref:"Yohanes 3:16"},
-{ text:"Akulah kebangkitan dan hidup...", ref:"Yohanes 11:25"},
-{ text:"Ia telah bangkit.", ref:"Matius 28:6"}
-];
+    const ayatList = [];
+    for (let i = 0; i < 220; i++) {
+      const verse = baseAyat[i % baseAyat.length];
+      ayatList.push({
+        text: verse.text,
+        ref: verse.ref
+      });
+    }
 
-function ambilAyat(){
-  const nama = document.getElementById("nama").value;
-  const random = ayatList[Math.floor(Math.random()*ayatList.length)];
-  document.getElementById("text").innerText = nama + ": " + random.text;
-  document.getElementById("ref").innerText = random.ref;
-}
+    function hash(str){
+      let h = 0;
+      for(let i = 0; i < str.length; i++){
+        h = (h << 5) - h + str.charCodeAt(i);
+        h |= 0;
+      }
+      return Math.abs(h);
+    }
 
-const audio = document.getElementById("bgMusic");
-const bars = document.querySelectorAll(".bar");
-const btn = document.getElementById("musicBtn");
+    function showToast(message){
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
 
-let ctx, analyser, dataArray, isPlaying=false;
+    function ambilAyat(){
+      const namaInput = document.getElementById("nama");
+      const nama = namaInput.value.trim();
 
-function setup(){
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
-  analyser = ctx.createAnalyser();
-  analyser.fftSize = 32;
+      if(!nama){
+        showToast("Isi nama dulu ya");
+        namaInput.focus();
+        return;
+      }
 
-  const source = ctx.createMediaElementSource(audio);
-  source.connect(analyser);
-  analyser.connect(ctx.destination);
+      const key = "ayatPaskah_" + nama.toLowerCase();
+      let saved = localStorage.getItem(key);
 
-  dataArray = new Uint8Array(analyser.frequencyBinCount);
-}
+      if(!saved){
+        const index = hash(nama.toLowerCase()) % ayatList.length;
+        const chosen = ayatList[index];
 
-function animate(){
-  analyser.getByteFrequencyData(dataArray);
+        saved = JSON.stringify({
+          nama,
+          text: chosen.text,
+          ref: chosen.ref
+        });
 
-  bars.forEach((bar,i)=>{
-    let val = dataArray[i];
-    bar.style.height = (10 + val/5) + "px";
-  });
+        localStorage.setItem(key, saved);
+      }
 
-  requestAnimationFrame(animate);
-}
+      const ayat = JSON.parse(saved);
 
-async function playMusic(){
-  if(!ctx) setup();
+      document.getElementById("namaTampil").textContent = ayat.nama;
+      document.getElementById("text").textContent = `“${ayat.text}”`;
+      document.getElementById("ref").textContent = ayat.ref;
+      document.getElementById("ayatBox").style.display = "block";
 
-  if(ctx.state==="suspended") await ctx.resume();
+      document.getElementById("ayatBox").scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+      });
+    }
 
-  if(!isPlaying){
-    await audio.play();
-    audio.muted = false;
-    isPlaying = true;
-    btn.innerText="🔇";
-    animate();
-  }else{
-    audio.pause();
-    isPlaying = false;
-    btn.innerText="🔊";
-  }
-}
+    async function copyAyat(){
+      const text = document.getElementById("text").textContent;
+      const ref = document.getElementById("ref").textContent;
+      const nama = document.getElementById("namaTampil").textContent;
+      const finalText = `${nama}\n${ref}\n${text}`;
 
-btn.onclick = playMusic;
+      try{
+        await navigator.clipboard.writeText(finalText);
+        showToast("Ayat berhasil disalin");
+      }catch(err){
+        showToast("Gagal menyalin");
+      }
+    }
 
-// autoplay setelah klik pertama
-document.body.addEventListener("click", playMusic, { once:true });
+    async function shareAyat(){
+      const text = document.getElementById("text").textContent;
+      const ref = document.getElementById("ref").textContent;
+      const nama = document.getElementById("namaTampil").textContent;
 
-// error handler
-audio.addEventListener("error", ()=>{
-  alert("Audio gagal dimuat, cek link mp3");
-});
-</script>
+      if(!text || !ref){
+        showToast("Ayat belum muncul");
+        return;
+      }
 
+      const payloadText = `${nama}\n${ref}\n${text}`;
+      const shareLink = window.location.href;
+
+      try{
+        if(navigator.share){
+          await navigator.share({
+            title: "Ayat Paskah",
+            text: payloadText,
+            url: shareLink
+          });
+        }else{
+          await navigator.clipboard.writeText(`${payloadText}\n${shareLink}`);
+          showToast("Teks & link berhasil disalin");
+        }
+      }catch(err){
+        showToast("Bagikan dibatalkan");
+      }
+    }
+
+    const audio = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    const bars = document.querySelectorAll(".bar");
+    const ring = document.getElementById("ring");
+    const card = document.getElementById("card");
+    const orb1 = document.getElementById("orb1");
+    const orb2 = document.getElementById("orb2");
+    const cross = document.getElementById("cross");
+
+    let audioContext = null;
+    let analyser = null;
+    let sourceNode = null;
+    let dataArray = null;
+    let isPlaying = false;
+    let animationId = null;
+    let audioReady = false;
+
+    function setupAudioAnalyzer(){
+      if(audioReady) return;
+
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if(!AudioContextClass){
+        showToast("Browser tidak mendukung audio visualizer");
+        return;
+      }
+
+      audioContext = new AudioContextClass();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 64;
+
+      sourceNode = audioContext.createMediaElementSource(audio);
+      sourceNode.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      const bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+      audioReady = true;
+    }
+
+    function startVisualizer(){
+      if(!analyser || !dataArray) return;
+
+      function animate(){
+        analyser.getByteFrequencyData(dataArray);
+
+        let total = 0;
+        for(let i = 0; i < dataArray.length; i++){
+          total += dataArray[i];
+        }
+        const avg = total / dataArray.length;
+        const intensity = avg / 255;
+
+        bars.forEach((bar, index) => {
+          const value = dataArray[index * 2] || 20;
+          const h = 14 + (value / 255) * 54;
+          bar.style.height = `${h}px`;
+          bar.style.opacity = `${0.55 + (value / 255) * 0.45}`;
+          bar.style.transform = `scaleY(${0.9 + (value / 255) * 0.18})`;
+        });
+
+        const scale = 1 + intensity * 0.18;
+        ring.style.transform = `scale(${scale})`;
+        ring.style.boxShadow = `
+          inset 0 0 30px rgba(255,255,255,.05),
+          0 0 ${20 + intensity * 40}px rgba(255,214,102,.20)
+        `;
+
+        card.style.transform = `translateY(${-(intensity * 3)}px)`;
+        card.style.boxShadow = `0 20px ${60 + intensity * 30}px rgba(0,0,0,.35)`;
+
+        cross.style.transform = `scale(${1 + intensity * 0.08}) rotate(${(intensity * 4) - 2}deg)`;
+        orb1.style.transform = `translate(${intensity * 18}px, ${-intensity * 14}px) scale(${1 + intensity * 0.14})`;
+        orb2.style.transform = `translate(${-intensity * 18}px, ${intensity * 14}px) scale(${1 + intensity * 0.12})`;
+
+        animationId = requestAnimationFrame(animate);
+      }
+
+      cancelAnimationFrame(animationId);
+      animate();
+    }
+
+    function stopVisualizer(){
+      cancelAnimationFrame(animationId);
+
+      bars.forEach(bar => {
+        bar.style.height = "18px";
+        bar.style.opacity = ".8";
+        bar.style.transform = "scaleY(1)";
+      });
+
+      ring.style.transform = "scale(1)";
+      card.style.transform = "translateY(0)";
+      cross.style.transform = "scale(1) rotate(0deg)";
+      orb1.style.transform = "";
+      orb2.style.transform = "";
+    }
+
+    async function toggleMusic(){
+      try{
+        setupAudioAnalyzer();
+
+        if(audioContext && audioContext.state === "suspended"){
+          await audioContext.resume();
+        }
+
+        if(!isPlaying){
+          await audio.play();
+          isPlaying = true;
+          musicBtn.textContent = "🔇";
+          startVisualizer();
+          showToast("Musik diputar");
+        }else{
+          audio.pause();
+          isPlaying = false;
+          musicBtn.textContent = "🔊";
+          stopVisualizer();
+          showToast("Musik dihentikan");
+        }
+      }catch(err){
+        showToast("Musik gagal diputar");
+      }
+    }
+
+    musicBtn.addEventListener("click", toggleMusic);
+
+    audio.addEventListener("ended", () => {
+      isPlaying = false;
+      musicBtn.textContent = "🔊";
+      stopVisualizer();
+    });
+
+    document.getElementById("nama").addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        ambilAyat();
+      }
+    });
+  </script>
 </body>
 </html>
